@@ -51,6 +51,12 @@ class Element:
     def __str__(self):
         return self["Symbol"]
 
+    def __hash__(self):
+        return self["Symbol"].__hash__()
+    
+    def __eq__(self, other) -> bool:
+        return type(self) == type(other) and self["Symbol"] == other["Symbol"]
+
 
 class Compound:
     """
@@ -60,6 +66,14 @@ class Compound:
     def __init__(self, formula: str):
         formula = formula.translate(REV_SUB)
         self.occurences = parse_formula(formula)
+    
+    @property
+    def occurences(self):
+        return self._occurences
+
+    @occurences.setter
+    def occurences(self, _occurences):
+        self._occurences = _occurences
         self.elements = []
         self.formula = []
         for symbol in self.occurences:
